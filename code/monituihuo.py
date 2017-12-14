@@ -8,10 +8,12 @@ Created on Wed Dec  6 22:48:27 2017
 #w0...w8共九个权重值
 import numpy as np
 import pandas as pd
-data = pd.read_csv("./171111_P0_M0_A0_C0_S0.csv").values
-partition = int(len(data)*2/3)                 
-train_data = data[0:partition,]
-test_data = data[partition:,]                
+data1 = pd.read_csv("./171111_P0_M0_A0_C0_S0.csv").values
+data2 = pd.read_csv("./171111_P0_M0_A0_C0_S1.csv").values      
+partition = int(len(data1)*1/3)                 
+train_data = data1[partition:,]
+test_data = data1[0:partition,]                
+
 #判断预测值和实际值是否匹配，计算概率
 
 def judge(a,data):
@@ -51,29 +53,30 @@ def accept(delta,t):
 def fit(train_data):
     T_min = 1e-3
     W = np.random.rand(9)
-    T = 10000
+    old_value = judge(get_a(W,train_data),train_data)
+    T = 100
     while T > T_min:
-        old_W = W
-        old_value = judge(get_a(W,train_data),train_data)
-        #print('old_value:'+str(old_value))
-        n = np.random.randint(0,9)
-        W[n] = np.random.rand()
-        new_value = judge(get_a(W,train_data),train_data)
-        delta = new_value - old_value
-        if accept(delta,T):
-            W = W
-        else:
-            W = old_W
-        T = T*0.99
-    print("train_data:"+str(judge(get_a(W,train_data),train_data)))
+        for i in range(10):
+            new_W = W
+            n = np.random.randint(0,9)
+            new_W[n] = np.random.rand()
+            new_value = judge(get_a(new_W,train_data),train_data)
+            delta = new_value - old_value
+            if accept(delta,T):
+                W = new_W
+                old_value = new_value
+            print(old_value)
+        T = T*0.98
+       
     return W
 
 
 def predict(test_data,W):
     print("predict_data:"+str(judge(get_a(W,test_data),test_data)))
     
+'''
 if __name__ == "__main__":
-    for i in range(10):
+    for i in range(5):
         W = fit(train_data)
         predict(test_data,W)
-
+'''
