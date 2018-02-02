@@ -15,6 +15,7 @@ code3 = d4.code_func(d4.code3)
 code4 = d4.code_func(d4.code4)
 code5 = d4.code_func(d4.code5)
 
+
 def createCSV(pro,code): 
     #按性别分类
     M0 = d4.M0_func(pro)
@@ -67,7 +68,7 @@ def createCSV(pro,code):
                   M2_C1_S0,M2_C1_S1, M2_C1_S2,M2_C1_S3]
     return result
 
-
+'''
 result1 = createCSV(d4.pro1,code1)
 result2 = createCSV(d4.pro2,code2)
 result3 = createCSV(d4.pro3,code3)
@@ -135,4 +136,4 @@ pd.DataFrame(M2_C1_S0,columns=d4.columns).to_csv('171110_P0_M2_A0_C1_S0.csv',ind
 pd.DataFrame(M2_C1_S1,columns=d4.columns).to_csv('171110_P0_M2_A0_C1_S1.csv',index=False)
 pd.DataFrame(M2_C1_S2,columns=d4.columns).to_csv('171110_P0_M2_A0_C1_S2.csv',index=False)
 pd.DataFrame(M2_C1_S3,columns=d4.columns).to_csv('171110_P0_M2_A0_C1_S3.csv',index=False)
-
+'''
