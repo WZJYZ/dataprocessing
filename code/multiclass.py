@@ -20,18 +20,7 @@ test_data = data[0:partition,]
 #计算W和data乘积，比较Y1，Y2，生成数组a
 #W:权重数组
 #data：数据集
-'''
-def get_a(W,data):
-    a = list()
-    for i in range(len(data)):
-        Y1 = W.dot(data[i,][0:9])
-        Y2 = W.dot(data[i,][9:-1])
-        if Y1 > Y2:
-            a.append(1)
-        else:
-            a.append(2)
-    return a
-'''
+
 def get_a(W, data, t):
     a = list()
     for i in range(len(data)):
@@ -104,10 +93,4 @@ def predict(W,test_data,t):
     
 
 
-    
-'''
-if __name__ == "__main__":
-    for i in range(5):
-        W = fit(train_data)
-        predict(test_data,W)
-'''
+

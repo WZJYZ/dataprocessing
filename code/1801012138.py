@@ -12,15 +12,19 @@ Created on Wed Dec  6 22:48:27 2017
 """
 #模拟退火算法
 #w0...w8共九个权重值
+import os
+import os.path
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-data1 = pd.read_csv("./data/171111_P0_M0_A0_C0_S0.csv",dtype=np.int).values
-data2 = pd.read_csv("./data/171111_P0_M2_A0_C1_S1.csv").values      
-partition1 = int(len(data1)*1/10)                 
+
+
+
+data1 = pd.read_csv("./data2/171110_P0_M0_A0_C0_S0.csv",dtype=np.int).values
+data2 = pd.read_csv("./data2/171110_P0_M0_A0_C0_S1.csv",dtype=np.int).values      
+partition1 = int(len(data1)*0.1)                 
 train_data1 = data1[partition1:,]
 test_data1 = data1[0:partition1,] 
-partition2 = int(len(data2)*1/10)                 
+partition2 = int(len(data2)*0.1)                 
 train_data2 = data2[partition2:,]
 test_data2 = data2[0:partition2,]
 
@@ -33,10 +37,8 @@ def get_a(W,data):
     for i in range(len(data)):
         t1 = data[i,][0]
         t2 = data[i,][9]
-        temp_W1 = W[t1-4]
-        temp_W2 = W[t2-4]
-        Y1 = temp_W1.dot(data[i,][2:9])
-        Y2 = temp_W2.dot(data[i,][11:-1])
+        Y1 = W[t1-4].dot(data[i,][1:9])
+        Y2 = W[t2-4].dot(data[i,][10:-1])
         if Y1 > Y2:
             a.append(1)
         else:
@@ -70,19 +72,19 @@ def accept(delta,t):
  
 
 def fit(train_data):
-    T_init = 1000 #初始温度
+    T_init = 100 #初始温度
     T_min = 1e-5    #最小温度
     alpha = 0.99 #每次降温系数
     T = T_init #初始化温度
     W =  list()
     for i in range(4):
-        temp = np.random.rand(7)
+        temp = np.random.rand(8)
         W.append(temp)
     old_value = judge(W,train_data)
-    value = [old_value]
+    #value = [old_value]
     #best_W = W.copy() 
     while T > T_min:
-        n = np.random.randint(0,7)
+        n = np.random.randint(0,8)
         W_new = W.copy()
         for i in range(4):
             W_new[i][n] = np.random.rand()
@@ -90,26 +92,40 @@ def fit(train_data):
         if new_value>old_value or np.math.exp(-(old_value-new_value)/T)>np.random.rand():
             W = W_new.copy()
             old_value = new_value
+            print(old_value)
            # best_W = W.copy()
         T = T*alpha
-        value.append(old_value)
-        print("value:"+str(old_value))
-    return W,value 
+        #value.append(old_value)
+        #print("value:"+str(old_value))
+    return W,old_value
 
 def predict(W,test_data):
-    print("predict_data:"+str(judge(W,test_data)))
-    
+    #print("predict_data:"+str(judge(W,test_data)))
+    return str(judge(W,test_data))
     
 
-def show(value):
-    plt.ylim(0,1)
-    plt.plot(value)
+
+'''
+
+data = list()
+for filename in os.listdir("./data"):#修改文件夹data，data2，data3
+    data.append(pd.read_csv('./data/' + filename ).values)
+
+
+for i in range(len(data)):
+    if i%4 == 0:
+        partition = int(len(data[i])*9/10)
+        w,v = fit(data[i][0:partition,])
+        p = predict(w,data[i][partition:,])
+        print("___S0——>"+ "训练集："+str(v)+"  测试集："+p)
+    elif i%4 == 1:
+        partition = int(len(data[i])*9/10)
+        w,v = fit(data[i][0:partition,])
+        p = predict(w,data[i][partition:,])
+        print("___S1——>"+ "训练集："+str(v)+"  测试集："+p)
+
     
     
 '''
-if __name__ == "__main__":
-    for i in range(5):
-        W = fit(train_data)
-        predict(test_data,W)
-'''
+
 

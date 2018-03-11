@@ -120,6 +120,10 @@ def C2_func(code,pro):
                 #a.append((j,pro[i,j+6]))
     #print(row)
     return np.delete(pro,row,axis=0)
+
+def C3_func(code,data):
+    return C2_func(code,C1_func(data))
+    
 #1）A选项的人集合包含或等于B选项的人集合.
 #2）A选项成功救援的概率>B选项.
 #A包含B
@@ -135,6 +139,8 @@ def C2_tool1(row):
         return True
     else:
         return False
+
+
 #B包含A
 def C2_tool2(row):
     flag = False

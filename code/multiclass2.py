@@ -108,14 +108,5 @@ def predict(W,test_data,t1,t2):
     return str(judge(W,test_data,t1,t2))
     
 
-def show(value):
-    plt.ylim(0,1)
-    plt.plot(value)
+
     
-    
-'''
-if __name__ == "__main__":
-    for i in range(5):
-        W = fit(train_data)
-        predict(test_data,W)
-'''
